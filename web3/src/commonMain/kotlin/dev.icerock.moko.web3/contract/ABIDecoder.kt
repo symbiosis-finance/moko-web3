@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Symbiosis Labs Ltd. Use of this source code is governed by the Apache 2.0 license.
+ * Copyright 2021 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
 package dev.icerock.moko.web3.contract
@@ -145,17 +145,15 @@ object ABIDecoder {
      * Read the warning below
      */
     fun decodeCallData(callData: ByteArray, vararg params: String): List<Any?> =
-        decodeCallData(params.toList(), callData)
+        decodeCallDataSimple(params.toList(), callData)
 
     /**
      * Be careful while using this method!
      * It is ok to call the method like decodeCallData("string", "bytes"),
      * but some serializers need more info than "type" in json object to be specified.
-     * For example tuple also requires "components" parameters to decode correctly
+     * For example tuple also requires "components" parameters to be decoded correctly
      */
-    @OptIn(ExperimentalStdlibApi::class)
-    @JvmName("decodeCallDataSimple")
-    fun decodeCallData(paramTypes: List<String>, callData: ByteArray): List<Any?> =
+    fun decodeCallDataSimple(paramTypes: List<String>, callData: ByteArray): List<Any?> =
         decodeCallData(
             // mapping to json objects like { "type": "string" }
             paramTypes = buildList {
@@ -164,7 +162,7 @@ object ABIDecoder {
                         put("type", typeAnnotation)
                     })
                 }
-            } as List<JsonObject>,
+            },
             callData = callData
         )
 

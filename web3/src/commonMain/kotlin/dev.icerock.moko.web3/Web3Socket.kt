@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Symbiosis Labs Ltd. Use of this source code is governed by the Apache 2.0 license.
+ * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
 package dev.icerock.moko.web3
@@ -8,8 +8,9 @@ import dev.icerock.moko.web3.entity.RpcRequest
 import dev.icerock.moko.web3.entity.Web3SocketResponse
 import dev.icerock.moko.web3.websockets.SubscriptionParam
 import io.ktor.client.*
-import io.ktor.client.features.websocket.*
-import io.ktor.http.cio.websocket.*
+import io.ktor.client.plugins.websocket.webSocket
+import io.ktor.websocket.Frame
+import io.ktor.websocket.readText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
