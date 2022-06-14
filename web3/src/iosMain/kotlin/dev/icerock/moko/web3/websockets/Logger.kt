@@ -5,7 +5,7 @@
 package dev.icerock.moko.web3.websockets
 
 import io.ktor.client.engine.HttpClientEngine
-import io.ktor.client.engine.ios.Ios
+import io.ktor.client.engine.darwin.Darwin
 import platform.Foundation.NSLog
 
 actual fun log(message: String) {
@@ -13,5 +13,5 @@ actual fun log(message: String) {
 }
 
 actual fun createHttpClientEngine(): HttpClientEngine {
-    return WSIosHttpClientEngine(Ios.create { })
+    return Darwin.create {  }
 }
