@@ -4,15 +4,10 @@
 
 package dev.icerock.moko.web3.contract
 
-import com.soywiz.kbignum.BigInt
 import dev.icerock.moko.web3.BlockHash
 import dev.icerock.moko.web3.BlockState
 import dev.icerock.moko.web3.ContractAddress
-import dev.icerock.moko.web3.TransactionHash
-import dev.icerock.moko.web3.WalletAddress
 import dev.icerock.moko.web3.Web3Executor
-import dev.icerock.moko.web3.Web3RpcRequest
-import dev.icerock.moko.web3.annotation.Web3Stub
 import dev.icerock.moko.web3.contract.ABIEncoder.encodeCallDataForMethod
 import dev.icerock.moko.web3.hex.Hex32String
 import dev.icerock.moko.web3.hex.HexString
@@ -21,17 +16,11 @@ import dev.icerock.moko.web3.requests.Web3Requests
 import dev.icerock.moko.web3.requests.executeBatch
 import dev.icerock.moko.web3.requests.getLogs
 import kotlinx.serialization.DeserializationStrategy
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 
 class SmartContract(
     val executor: Web3Executor,

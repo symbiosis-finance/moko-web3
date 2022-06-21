@@ -7,6 +7,7 @@
 package dev.icerock.moko.web3.entity
 
 import com.soywiz.kbignum.BigInt
+import com.soywiz.kbignum.bi
 import dev.icerock.moko.web3.BlockHash
 import dev.icerock.moko.web3.SyncingWeb3SocketEvent
 import dev.icerock.moko.web3.TransactionHash
@@ -48,7 +49,7 @@ data class TransactionReceipt(
     /** integer of the transactions index position in the block **/
     val transactionIndex: BigInt,
     /** The transaction type: 0x0 for Legacy transactions, 0x1 for Access List transactions, 0x2 for 1559 Transactions **/
-    val type: BigInt,
+    val type: BigInt = 0.bi,
     /** optional, didn't document, found in rinkeby response **/
     val effectiveGasPrice: BigInt? = null
 ) {
