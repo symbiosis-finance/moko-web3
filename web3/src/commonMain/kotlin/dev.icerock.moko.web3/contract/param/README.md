@@ -47,6 +47,12 @@ This call would be correct for ABI below:
 }
 ```
 
+Or a solidity signature:
+
+```solidity
+function balanceOf(address owner) public view virtual override returns (uint256)
+```
+
 To pass valid params and make proper casts, you should know something about type mappings:
 
 | solidity type               | kotlin type     | encoder         |
