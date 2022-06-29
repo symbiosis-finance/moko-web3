@@ -2,8 +2,11 @@
  * Copyright 2021 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
-package dev.icerock.moko.web3.contract
+package dev.icerock.moko.web3.contract.param
 
+import dev.icerock.moko.web3.contract.ABIDecoder
+import dev.icerock.moko.web3.contract.ABIEncoder
+import dev.icerock.moko.web3.contract.DynamicEncoder
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray

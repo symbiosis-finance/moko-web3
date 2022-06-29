@@ -2,10 +2,12 @@
  * Copyright 2021 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
-package dev.icerock.moko.web3.contract
+package dev.icerock.moko.web3.contract.param
 
 import com.soywiz.kbignum.bi
 import dev.icerock.moko.web3.contract.ABIEncoder.PART_SIZE
+import dev.icerock.moko.web3.contract.DynamicEncoder
+import dev.icerock.moko.web3.contract.Encoder
 
 class ListParam<T>(private val subtypeEncoder: Encoder<T>) : DynamicEncoder<List<T>> {
     override fun encode(item: List<T>): ByteArray {

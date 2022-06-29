@@ -10,9 +10,9 @@ import com.soywiz.kbignum.BigInt
 import com.soywiz.kbignum.bi
 import com.soywiz.kbignum.bn
 import dev.icerock.moko.web3.contract.ABIEncoder
-import dev.icerock.moko.web3.contract.AddressParam
+import dev.icerock.moko.web3.contract.param.AddressParam
 import dev.icerock.moko.web3.contract.SmartContract
-import dev.icerock.moko.web3.contract.UInt256Param
+import dev.icerock.moko.web3.contract.param.UInt256Param
 import dev.icerock.moko.web3.contract.createErc20TokenAbi
 import dev.icerock.moko.web3.entity.RpcResponse
 import dev.icerock.moko.web3.entity.TransactionReceipt
@@ -36,7 +36,6 @@ import io.ktor.client.engine.mock.respondBadRequest
 import io.ktor.client.request.HttpRequestData
 import io.ktor.client.request.HttpResponseData
 import io.ktor.content.TextContent
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -203,7 +202,7 @@ class Web3Test {
     @Test
     fun `address encoder`() {
         val param = AddressParam
-        val addr = "9a0A2498Ec7f105ef65586592a5B6d4Da3590D74".bi(16)
+        val addr = "9a0A2498Ec7f105ef65586592a5B6d4Da3590D74".bi(16).let(EthereumAddress::createInstance)
         val result = param.encode(addr)
         val hex = result.toHex()
 

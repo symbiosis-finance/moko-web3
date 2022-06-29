@@ -25,9 +25,13 @@ This is a Kotlin MultiPlatform library that allow you to interact with ethereum 
 ## Installation
 root build.gradle  
 ```groovy
-allprojects {
-    repositories {
-        mavenCentral()
+repositories {
+    maven {
+        url = uri("https://maven.pkg.github.com/symbiosis-finance/maven")
+        credentials {
+            username = System.getenv("GITHUB_USERNAME")
+            password = System.getenv("TOKEN")
+        }
     }
 }
 ```
@@ -35,30 +39,50 @@ allprojects {
 project build.gradle
 ```groovy
 dependencies {
-    commonMainApi("dev.icerock.moko:web3:0.20.0")
+    commonMainApi("dev.icerock.moko:web3:1.0.0")
 }
 ```
 
-## Usage
-...
+## Getting started
 
-## Samples
-More examples can be found in the [sample directory](sample).
+To start with, you should create `Web3Executor` instance.
 
-## Set Up Locally 
-- In [web3 directory](web3) contains `web3` library;
-- In [sample directory](sample) contains samples on android, ios & mpp-library connected to apps.
+```kotlin
+val web3 = Web3("rpc url")
+```
+
+Now you can connect to the blockchain using this library. 
+
+For example, a web3 call:
+
+```kotlin
+val balance = web3.getNativeBalance(WalletAddress("..."))
+```
+
+moko-web3 also supports **batching**:
+
+```kotlin
+val (firstBalance, secondBalance) = 
+    web3.executeBatch(
+        Web3Requests.getNativeBalance(WalletAddress("...")),
+        Web3Requests.getNativeBalance(WalletAddress("..."))
+    )
+```
+
+This will be retrieved in one HTTP request.
+
+If you want to call a smart contract method, see an example [here](web3/src/commonMain/kotlin/dev.icerock.moko.web3/contract/param/README.md)
 
 ## Contributing
 All development (both new features and bug fixes) is performed in `develop` branch. This way `master` sources always contain sources of the most recently released version. Please send PRs with bug fixes to `develop` branch. Fixes to documentation in markdown files are an exception to this rule. They are updated directly in `master`.
 
 The `develop` branch is pushed to `master` during release.
 
-More detailed guide for contributers see in [contributing guide](CONTRIBUTING.md).
+More detailed guide for contributors see in [contributing guide](CONTRIBUTING.md).
 
 ## License
         
-    Copyright 2021 IceRock MAG Inc
+    Copyright 2021 Symbiosis Labs Ltd.
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
