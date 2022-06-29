@@ -23,6 +23,30 @@ smartContract.read(
 }
 ```
 
+This call would be correct for ABI below:
+
+```json
+{
+    "constant": true,
+    "inputs": [
+        {
+            "name": "_owner",
+            "type": "address"
+        }
+    ],
+    "name": "balanceOf",
+    "outputs": [
+        {
+            "name": "balance",
+            "type": "uint256"
+        }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}
+```
+
 To pass valid params and make proper casts, you should know something about type mappings:
 
 | solidity type               | kotlin type     | encoder         |
