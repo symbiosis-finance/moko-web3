@@ -44,6 +44,8 @@ sealed interface Credentials {
             gasConfiguration: GasConfiguration
         ): SignedTransaction
     }
+
+    companion object
 }
 
 internal suspend fun Credentials.unifiedSignTransferTransaction(
