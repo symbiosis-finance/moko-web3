@@ -43,7 +43,7 @@ object ABIEncoder {
     @Suppress("UNCHECKED_CAST")
     private fun <T> Encoder<T>.encodeUnchecked(value: Any?) = encode(value as T)
 
-    fun encodeCallDataForMethod(abi: JsonArray, method: String, params: List<Any>): HexString {
+    fun encodeCallDataForMethod(abi: JsonArray, method: String, params: List<Any?>): HexString {
         val methodAbi: JsonObject = abi.map { it.jsonObject }
             .firstOrNull { it["name"]?.jsonPrimitive?.contentOrNull == method }
             ?: throw AbiEntityNotFoundException(method, abi)

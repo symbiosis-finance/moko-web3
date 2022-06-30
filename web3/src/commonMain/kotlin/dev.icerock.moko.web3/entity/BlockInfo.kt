@@ -4,16 +4,12 @@
 
 @file:UseSerializers(BigIntSerializer::class)
 
-package dev.icerock.moko.web3
+package dev.icerock.moko.web3.entity
 
 import com.soywiz.kbignum.BigInt
-import dev.icerock.moko.web3.entity.TransactionReceipt
 import dev.icerock.moko.web3.hex.Hex256String
-import dev.icerock.moko.web3.hex.Hex256StringSerializer
 import dev.icerock.moko.web3.hex.Hex32String
-import dev.icerock.moko.web3.hex.Hex32StringSerializer
 import dev.icerock.moko.web3.hex.Hex8String
-import dev.icerock.moko.web3.hex.Hex8StringSerializer
 import dev.icerock.moko.web3.serializer.BigIntSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers

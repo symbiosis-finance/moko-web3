@@ -2,14 +2,11 @@
  * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
-package dev.icerock.moko.web3
+package dev.icerock.moko.web3.entity
 
 import com.soywiz.kbignum.bi
 import dev.icerock.moko.web3.crypto.createChecksummedAddress
 import dev.icerock.moko.web3.hex.Hex20String
-import dev.icerock.moko.web3.hex.Hex32String
-import dev.icerock.moko.web3.hex.Hex8String
-import dev.icerock.moko.web3.hex.HexString
 import dev.icerock.moko.web3.hex.ParametrizedHexStringSerializer
 import kotlinx.serialization.Serializable
 

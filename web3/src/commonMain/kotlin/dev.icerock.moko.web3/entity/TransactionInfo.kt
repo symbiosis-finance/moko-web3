@@ -4,7 +4,7 @@
 
 @file:UseSerializers(BigIntSerializer::class)
 
-package dev.icerock.moko.web3
+package dev.icerock.moko.web3.entity
 
 import com.soywiz.kbignum.BigInt
 import dev.icerock.moko.web3.serializer.BigIntSerializer

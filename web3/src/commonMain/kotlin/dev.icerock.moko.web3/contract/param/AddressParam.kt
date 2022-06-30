@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.web3.contract.param
 
-import dev.icerock.moko.web3.EthereumAddress
+import dev.icerock.moko.web3.entity.EthereumAddress
 import dev.icerock.moko.web3.contract.StaticEncoder
 
 object AddressParam : StaticEncoder<EthereumAddress> {

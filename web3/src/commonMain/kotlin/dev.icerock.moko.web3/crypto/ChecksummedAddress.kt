@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.web3.crypto
 
-import dev.icerock.moko.web3.EthereumAddress
+import dev.icerock.moko.web3.entity.EthereumAddress
 import dev.icerock.moko.web3.hex.HexString
 
 /**

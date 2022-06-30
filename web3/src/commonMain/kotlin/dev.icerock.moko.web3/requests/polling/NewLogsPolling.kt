@@ -4,10 +4,10 @@
 
 package dev.icerock.moko.web3.requests.polling
 
-import dev.icerock.moko.web3.BlockState
-import dev.icerock.moko.web3.EthereumAddress
+import dev.icerock.moko.web3.entity.BlockState
+import dev.icerock.moko.web3.entity.EthereumAddress
 import dev.icerock.moko.web3.Web3Executor
-import dev.icerock.moko.web3.Web3RpcException
+import dev.icerock.moko.web3.entity.Web3RpcException
 import dev.icerock.moko.web3.entity.LogEvent
 import dev.icerock.moko.web3.hex.Hex32String
 import dev.icerock.moko.web3.requests.getLogs

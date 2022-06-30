@@ -5,21 +5,22 @@
 package dev.icerock.moko.web3.requests
 
 import com.soywiz.kbignum.BigInt
-import dev.icerock.moko.web3.BlockHash
-import dev.icerock.moko.web3.BlockInfo
-import dev.icerock.moko.web3.BlockState
-import dev.icerock.moko.web3.BlockStateSerializer
-import dev.icerock.moko.web3.ContractAddress
-import dev.icerock.moko.web3.EthereumAddress
-import dev.icerock.moko.web3.TransactionHash
-import dev.icerock.moko.web3.WalletAddress
-import dev.icerock.moko.web3.Web3RpcRequest
+import dev.icerock.moko.web3.entity.BlockHash
+import dev.icerock.moko.web3.entity.BlockInfo
+import dev.icerock.moko.web3.entity.BlockState
+import dev.icerock.moko.web3.entity.BlockStateSerializer
+import dev.icerock.moko.web3.entity.ContractAddress
+import dev.icerock.moko.web3.entity.EthereumAddress
+import dev.icerock.moko.web3.entity.TransactionHash
+import dev.icerock.moko.web3.entity.WalletAddress
+import dev.icerock.moko.web3.entity.Web3RpcRequest
 import dev.icerock.moko.web3.entity.LogEvent
 import dev.icerock.moko.web3.entity.Transaction
 import dev.icerock.moko.web3.entity.TransactionReceipt
 import dev.icerock.moko.web3.hex.Hex32String
 import dev.icerock.moko.web3.hex.HexString
 import dev.icerock.moko.web3.serializer.BigIntSerializer
+import dev.icerock.moko.web3.signing.SignedTransaction
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -32,9 +33,9 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.encodeToJsonElement
 
 object Web3Requests {
-    fun send(signedTransaction: String) = Web3RpcRequest(
+    fun send(transaction: SignedTransaction) = Web3RpcRequest(
         method = "eth_sendRawTransaction",
-        params = listOf(signedTransaction),
+        params = listOf(transaction.data.prefixed),
         paramsSerializer = String.serializer(),
         resultSerializer = TransactionHash.serializer()
     )
@@ -110,7 +111,7 @@ object Web3Requests {
         to: EthereumAddress,
         callData: HexString?,
         value: BigInt?
-    ): Web3RpcRequest<*, BigInt> = Web3RpcRequest(
+    ): Web3RpcRequest<BigInt> = Web3RpcRequest(
         method = "eth_estimateGas",
         params = listOf(
             GetEstimateGasObject(
@@ -130,7 +131,7 @@ object Web3Requests {
         from: EthereumAddress?,
         gasPrice: BigInt?,
         value: BigInt?
-    ): Web3RpcRequest<*, BigInt> = getEstimateGas(
+    ): Web3RpcRequest<BigInt> = getEstimateGas(
         from = from,
         gasPrice = gasPrice,
         to = callRpcRequest.contractAddress,

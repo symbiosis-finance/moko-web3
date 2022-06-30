@@ -7,9 +7,6 @@
 package dev.icerock.moko.web3.entity
 
 import com.soywiz.kbignum.BigInt
-import dev.icerock.moko.web3.BlockHash
-import dev.icerock.moko.web3.TransactionHash
-import dev.icerock.moko.web3.WalletAddress
 import dev.icerock.moko.web3.serializer.BigIntSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
