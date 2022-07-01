@@ -17,10 +17,10 @@ kotlin {
 }
 
 dependencies {
-    commonMainImplementation(libs.coroutines)
-    commonMainImplementation(libs.kbignum)
+    commonMainApi(libs.coroutines)
+    commonMainApi(libs.kbignum)
     commonMainImplementation(libs.kotlinSerialization)
-    commonMainImplementation(libs.klock)
+    commonMainApi(libs.klock)
     commonMainImplementation(libs.ktorClient)
     commonMainImplementation(libs.ktorWebsockets)
     

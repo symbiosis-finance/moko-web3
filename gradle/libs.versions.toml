@@ -11,6 +11,7 @@ ktorClientVersion = "2.0.0"
 mokoTestVersion = "0.4.0"
 mokoWeb3Version = "1.0.0-build1"
 multidexVersion = "2.0.1"
+web3jVersion = "4.8.5"
 
 [libraries]
 appCompat = { module = "androidx.appcompat:appcompat", version.ref = "androidAppCompatVersion" }
@@ -39,3 +40,4 @@ kotlinTestAnnotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations
 kotlinTest = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlinVersion" }
 kotlinTestJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlinVersion" }
 multidex = { module = "androidx.multidex:multidex", version.ref = "multidexVersion" }
+web3j = { module = "org.web3j:core", version.ref = "web3jVersion" }
