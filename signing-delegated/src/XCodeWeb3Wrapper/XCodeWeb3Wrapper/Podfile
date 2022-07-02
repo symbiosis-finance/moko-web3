@@ -1,0 +1,14 @@
+source 'https://cdn.cocoapods.org/'
+
+inhibit_all_warnings!
+
+use_frameworks!
+platform :ios, '12.0'
+
+install! 'cocoapods', :disable_input_output_paths => true
+
+target 'XCodeWeb3Wrapper' do
+  use_frameworks!
+
+  pod 'SwiftWeb3Wrapper', :path => "../"
+end

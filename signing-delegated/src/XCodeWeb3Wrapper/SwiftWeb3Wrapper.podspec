@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
     spec.summary                  = 'Objc Wrapper for web3swift pod'
     spec.module_name              = "#{spec.name}"
 
-    spec.source_files             = "Sources/**/*.{h,m,swift}"
+    spec.source_files             = "*.{h,m,swift}"
 
     spec.ios.deployment_target  = '12.0'
     spec.swift_version          = '5.0'

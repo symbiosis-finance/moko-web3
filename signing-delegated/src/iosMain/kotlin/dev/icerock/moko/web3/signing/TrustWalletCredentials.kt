@@ -1,25 +1,23 @@
-package dev.icerock.moko.web3.transaction
+package dev.icerock.moko.web3.signing
 
 import cocoapods.SwiftWeb3Wrapper.SwiftCredentials
 import cocoapods.SwiftWeb3Wrapper.SwiftTransactionEncoder
 import com.soywiz.kbignum.BigInt
-import dev.icerock.moko.web3.errors.toException
-import com.symbiosis.sdk.gas.GasConfiguration
-import dev.icerock.moko.web3.ContractAddress
-import dev.icerock.moko.web3.WalletAddress
-import kotlinx.cinterop.CPointer
-import kotlinx.cinterop.ObjCObjectVar
-import kotlinx.cinterop.alloc
-import kotlinx.cinterop.memScoped
-import kotlinx.cinterop.ptr
-import kotlinx.cinterop.value
-import platform.Foundation.NSError
+import dev.icerock.moko.web3.entity.ContractAddress
+import dev.icerock.moko.web3.entity.WalletAddress
+import dev.icerock.moko.web3.gas.GasConfiguration
+import dev.icerock.moko.web3.hex.Hex32String
+import dev.icerock.moko.web3.hex.HexString
+import dev.icerock.moko.web3.signing.mnemonic.KeyPhrase
 
-class SwiftCredentialsTransactionSigner (
-    private val credentials: SwiftCredentials
-) : TransactionSigner.Blocking {
+class TrustWalletCredentials(private val credentials: SwiftCredentials) : Credentials.Local {
+    constructor(privateKey: Hex32String) :
+            this(SwiftCredentials(privateKey.withoutPrefix, error = null))
 
-    override fun signTransferTransactionBlocking(
+    constructor(keyPhrase: KeyPhrase) :
+            this(SwiftCredentials(mnemonics = keyPhrase.value, error = null))
+
+    override fun signTransferTransaction(
         nonce: BigInt,
         chainId: BigInt,
         to: WalletAddress,
@@ -27,7 +25,7 @@ class SwiftCredentialsTransactionSigner (
         gasConfiguration: GasConfiguration
     ): SignedTransaction {
         val encoded = when (gasConfiguration) {
-            is GasConfiguration.Legacy -> encoderAction {
+            is GasConfiguration.Legacy ->
                 SwiftTransactionEncoder.signTransactionWithNonce(
                     nonce = nonce.toHexString(),
                     gasPrice = gasConfiguration.gasPrice.toHexString(),
@@ -38,8 +36,7 @@ class SwiftCredentialsTransactionSigner (
                     credentials = credentials,
                     data = null
                 )
-            }
-            is GasConfiguration.EIP1559 -> encoderAction {
+            is GasConfiguration.EIP1559 ->
                 SwiftTransactionEncoder.signTransactionWithChainId(
                     chainId = chainId.toHexString(),
                     nonce = nonce.toHexString(),
@@ -51,21 +48,20 @@ class SwiftCredentialsTransactionSigner (
                     maxFeePerGas = gasConfiguration.maxFeePerGas.toHexString(),
                     credentials = credentials
                 )
-            }
         }
-        return SignedTransaction(encoded)
+        return SignedTransaction(HexString(encoded))
     }
 
-    override fun signContractTransactionBlocking(
+    override fun signContractTransaction(
         nonce: BigInt,
         chainId: BigInt,
         to: ContractAddress,
-        contractData: String,
+        callData: HexString,
         value: BigInt,
         gasConfiguration: GasConfiguration
     ): SignedTransaction {
         val encoded = when (gasConfiguration) {
-            is GasConfiguration.Legacy -> encoderAction {
+            is GasConfiguration.Legacy ->
                 SwiftTransactionEncoder.signTransactionWithNonce(
                     nonce = nonce.toHexString(),
                     gasPrice = gasConfiguration.gasPrice.toHexString(),
@@ -74,40 +70,26 @@ class SwiftCredentialsTransactionSigner (
                     value = value.toHexString(),
                     chainId = chainId.toHexString(),
                     credentials = credentials,
-                    data = contractData
+                    data = callData.withoutPrefix
                 )
-            }
-            is GasConfiguration.EIP1559 -> encoderAction {
+            is GasConfiguration.EIP1559 ->
                 SwiftTransactionEncoder.signTransactionWithChainId(
                     chainId = chainId.toHexString(),
                     nonce = nonce.toHexString(),
                     gasLimit = gasConfiguration.gasLimit.toHexString(),
                     to = to.prefixed,
                     value = value.toHexString(),
-                    data = contractData,
+                    data = callData.withoutPrefix,
                     maxPriorityFeePerGas = gasConfiguration.maxPriorityFeePerGas.toHexString(),
                     maxFeePerGas = gasConfiguration.maxFeePerGas.toHexString(),
                     credentials = credentials
                 )
-            }
         }
 
-        return SignedTransaction(encoded)
+        return SignedTransaction(HexString(encoded))
     }
 
-    private fun encoderAction(
-        action: (CPointer<ObjCObjectVar<NSError?>>) -> String?
-    ): String {
-        val (result, error) = memScoped {
-            val p = alloc<ObjCObjectVar<NSError?>>()
-            val result: String? = runCatching {
-                action(p.ptr)
-            }.getOrNull()
-            result to p.value
-        }
-        if (error != null) throw error.toException()
-        else return result!!
-    }
+    private fun BigInt.toHexString() = HexString(this).withoutPrefix
 
-    private fun BigInt.toHexString() = this.toString(radix = 16)
+    override val address: WalletAddress = WalletAddress(credentials.address())
 }
