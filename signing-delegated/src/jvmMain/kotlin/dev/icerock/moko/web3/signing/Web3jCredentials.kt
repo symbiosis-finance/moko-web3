@@ -1,4 +1,4 @@
-package dev.icerock.moko.web3
+package dev.icerock.moko.web3.signing
 
 import com.soywiz.kbignum.BigInt
 import dev.icerock.moko.web3.entity.ContractAddress
@@ -6,9 +6,7 @@ import dev.icerock.moko.web3.entity.WalletAddress
 import dev.icerock.moko.web3.gas.GasConfiguration
 import dev.icerock.moko.web3.hex.Hex32String
 import dev.icerock.moko.web3.hex.HexString
-import dev.icerock.moko.web3.mnemonic.KeyPhrase
-import dev.icerock.moko.web3.signing.Credentials
-import dev.icerock.moko.web3.signing.SignedTransaction
+import dev.icerock.moko.web3.signing.mnemonic.KeyPhrase
 import org.web3j.crypto.Bip32ECKeyPair
 import org.web3j.crypto.MnemonicUtils
 import org.web3j.crypto.RawTransaction
