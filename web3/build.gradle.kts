@@ -32,41 +32,41 @@ dependencies {
     jvmTestImplementation(libs.kotlinTest)
     jvmTestImplementation(libs.kotlinTestJunit)
 
-    iosMainImplementation(libs.ktorClientIos)
-    iosTestImplementation(libs.ktorClientIos)
+//    iosMainImplementation(libs.ktorClientIos)
+//    iosTestImplementation(libs.ktorClientIos)
 }
 
 // now standard test task use --standalone but it broke network calls
-val newTestTask = tasks.create("iosX64TestWithNetwork") {
-    val linkTask = tasks.getByName("linkDebugTestIosX64") as org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
-    dependsOn(linkTask)
-
-    group = JavaBasePlugin.VERIFICATION_GROUP
-    description = "Runs tests for target 'ios' on an iOS simulator"
-
-    doLast {
-        val binary = linkTask.binary.outputFile
-        val device = "iPhone 8"
-        exec {
-            commandLine = listOf("xcrun", "simctl", "boot", device)
-            isIgnoreExitValue = true
-        }
-        exec {
-            commandLine = listOf(
-                "xcrun",
-                "simctl",
-                "spawn",
-                device,
-                binary.absolutePath
-            )
-        }
-        exec {
-            commandLine = listOf("xcrun", "simctl", "shutdown", device)
-        }
-    }
-}
-
-with(tasks.getByName("iosX64Test")) {
-    dependsOn(newTestTask)
-    onlyIf { false }
-}
+//val newTestTask = tasks.create("iosX64TestWithNetwork") {
+//    val linkTask = tasks.getByName("linkDebugTestIosX64") as org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
+//    dependsOn(linkTask)
+//
+//    group = JavaBasePlugin.VERIFICATION_GROUP
+//    description = "Runs tests for target 'ios' on an iOS simulator"
+//
+//    doLast {
+//        val binary = linkTask.binary.outputFile
+//        val device = "iPhone 8"
+//        exec {
+//            commandLine = listOf("xcrun", "simctl", "boot", device)
+//            isIgnoreExitValue = true
+//        }
+//        exec {
+//            commandLine = listOf(
+//                "xcrun",
+//                "simctl",
+//                "spawn",
+//                device,
+//                binary.absolutePath
+//            )
+//        }
+//        exec {
+//            commandLine = listOf("xcrun", "simctl", "shutdown", device)
+//        }
+//    }
+//}
+//
+//with(tasks.getByName("iosX64Test")) {
+//    dependsOn(newTestTask)
+//    onlyIf { false }
+//}

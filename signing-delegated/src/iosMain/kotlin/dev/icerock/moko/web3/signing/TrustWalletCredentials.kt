@@ -12,7 +12,7 @@ import dev.icerock.moko.web3.signing.mnemonic.KeyPhrase
 
 class TrustWalletCredentials(private val credentials: SwiftCredentials) : Credentials.Local {
     constructor(privateKey: Hex32String) :
-            this(SwiftCredentials(privateKey.withoutPrefix, error = null))
+            this(SwiftCredentials(privateKey = privateKey.withoutPrefix, error = null))
 
     constructor(keyPhrase: KeyPhrase) :
             this(SwiftCredentials(mnemonics = keyPhrase.value, error = null))

@@ -14,9 +14,6 @@ This is a Kotlin MultiPlatform library that allow you to interact with ethereum 
 - [Contributing](#contributing)
 - [License](#license)
 
-## Features
-...
-
 ## Requirements
 - Gradle version 6.8+
 - Android API 16+
@@ -39,7 +36,7 @@ repositories {
 project build.gradle
 ```groovy
 dependencies {
-    commonMainApi("dev.icerock.moko:web3:1.0.0")
+    commonMainApi("dev.icerock.moko:web3:1.0.1")
 }
 ```
 

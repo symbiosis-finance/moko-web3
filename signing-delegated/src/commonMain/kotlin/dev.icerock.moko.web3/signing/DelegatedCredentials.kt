@@ -2,6 +2,7 @@ package dev.icerock.moko.web3.signing
 
 import dev.icerock.moko.web3.hex.Hex32String
 import dev.icerock.moko.web3.signing.mnemonic.KeyPhrase
+import kotlin.jvm.JvmName
 
 expect fun Credentials.Companion.createFromPrivateKey(privateKey: Hex32String): Credentials
 

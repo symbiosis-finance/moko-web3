@@ -6,6 +6,9 @@ plugins {
 
 dependencies {
     commonMainApi(projects.web3)
+//    iosMainImplementation(libs.kbignum)
+//    iosArm64Implementation(libs.kbignum)
+//    iosX64Implementation(libs.kbignum)
     jvmMainImplementation(libs.web3j)
 }
 

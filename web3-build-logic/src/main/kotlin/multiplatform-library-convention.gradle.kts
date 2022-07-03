@@ -8,12 +8,13 @@ plugins {
 
 kotlin {
     jvm()
-    ios()
-    iosSimulatorArm64()
+//    ios()
 
-    sourceSets {
-        getByName("iosSimulatorArm64Main").dependsOn(getByName("iosMain"))
-        getByName("iosSimulatorArm64Test").dependsOn(getByName("iosTest"))
-    }
+//    iosSimulatorArm64()
+
+//    sourceSets {
+//        getByName("iosSimulatorArm64Main").dependsOn(getByName("iosMain"))
+//        getByName("iosSimulatorArm64Test").dependsOn(getByName("iosTest"))
+//    }
 
 }
