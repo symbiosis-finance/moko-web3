@@ -4,6 +4,14 @@
 
 package dev.icerock.moko.web3.contract
 
+import dev.icerock.moko.web3.contract.param.AddressParam
+import dev.icerock.moko.web3.contract.param.BoolParam
+import dev.icerock.moko.web3.contract.param.BytesParam
+import dev.icerock.moko.web3.contract.param.ListParam
+import dev.icerock.moko.web3.contract.param.SizedBytesParam
+import dev.icerock.moko.web3.contract.param.StringParam
+import dev.icerock.moko.web3.contract.param.TupleParam
+import dev.icerock.moko.web3.contract.param.UInt256Param
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive

@@ -4,9 +4,9 @@
 
 package dev.icerock.moko.web3.websockets
 
-import dev.icerock.moko.web3.NewHeadsWeb3SocketEvent
-import dev.icerock.moko.web3.SyncingWeb3SocketEvent
-import dev.icerock.moko.web3.WalletAddress
+import dev.icerock.moko.web3.entity.NewHeadsWeb3SocketEvent
+import dev.icerock.moko.web3.entity.SyncingWeb3SocketEvent
+import dev.icerock.moko.web3.entity.WalletAddress
 import dev.icerock.moko.web3.entity.LogEvent
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer

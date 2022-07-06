@@ -6,7 +6,7 @@
 
 package dev.icerock.moko.web3.contract
 
-import dev.icerock.moko.web3.ContractAddress
+import dev.icerock.moko.web3.entity.ContractAddress
 import dev.icerock.moko.web3.serializer.BigIntSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers

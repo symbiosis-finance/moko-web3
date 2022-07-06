@@ -7,16 +7,10 @@
 package dev.icerock.moko.web3.entity
 
 import com.soywiz.kbignum.BigInt
-import dev.icerock.moko.web3.BlockHash
-import dev.icerock.moko.web3.ContractAddress
-import dev.icerock.moko.web3.EthereumAddress
-import dev.icerock.moko.web3.TransactionHash
 import dev.icerock.moko.web3.hex.Hex32String
 import dev.icerock.moko.web3.hex.HexString
 import dev.icerock.moko.web3.serializer.BigIntSerializer
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 import kotlinx.serialization.UseSerializers
 
 @Serializable

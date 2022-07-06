@@ -5,8 +5,8 @@
 package dev.icerock.moko.web3.contract
 
 import dev.icerock.moko.web3.contract.ABIEncoder.PART_SIZE
+import dev.icerock.moko.web3.contract.param.UInt256Param
 import dev.icerock.moko.web3.entity.LogEvent
-import dev.icerock.moko.web3.hex.Hex32String
 import dev.icerock.moko.web3.hex.HexString
 import dev.icerock.moko.web3.hex.internal.toHex
 import kotlinx.serialization.json.JsonArray
@@ -18,7 +18,6 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
-import kotlin.jvm.JvmName
 
 /**
  * You can use this object for these general cases:

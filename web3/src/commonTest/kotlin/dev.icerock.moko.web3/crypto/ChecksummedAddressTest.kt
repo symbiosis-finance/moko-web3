@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.web3.crypto
 
-import dev.icerock.moko.web3.ContractAddress
+import dev.icerock.moko.web3.entity.ContractAddress
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

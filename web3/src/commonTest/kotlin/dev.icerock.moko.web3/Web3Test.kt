@@ -10,12 +10,17 @@ import com.soywiz.kbignum.BigInt
 import com.soywiz.kbignum.bi
 import com.soywiz.kbignum.bn
 import dev.icerock.moko.web3.contract.ABIEncoder
-import dev.icerock.moko.web3.contract.AddressParam
+import dev.icerock.moko.web3.contract.param.AddressParam
 import dev.icerock.moko.web3.contract.SmartContract
-import dev.icerock.moko.web3.contract.UInt256Param
+import dev.icerock.moko.web3.contract.param.UInt256Param
 import dev.icerock.moko.web3.contract.createErc20TokenAbi
+import dev.icerock.moko.web3.entity.BlockHash
+import dev.icerock.moko.web3.entity.ContractAddress
+import dev.icerock.moko.web3.entity.EthereumAddress
 import dev.icerock.moko.web3.entity.RpcResponse
+import dev.icerock.moko.web3.entity.TransactionHash
 import dev.icerock.moko.web3.entity.TransactionReceipt
+import dev.icerock.moko.web3.entity.WalletAddress
 import dev.icerock.moko.web3.hex.Hex32String
 import dev.icerock.moko.web3.hex.HexString
 import dev.icerock.moko.web3.hex.internal.toHex
@@ -24,7 +29,7 @@ import dev.icerock.moko.web3.requests.executeBatch
 import dev.icerock.moko.web3.requests.getEstimateGas
 import dev.icerock.moko.web3.requests.getGasPrice
 import dev.icerock.moko.web3.requests.getNativeBalance
-import dev.icerock.moko.web3.requests.getNativeTransactionCount
+import dev.icerock.moko.web3.requests.getTransactionCount
 import dev.icerock.moko.web3.requests.getTransaction
 import dev.icerock.moko.web3.requests.getTransactionReceipt
 import dev.icerock.moko.web3.requests.polling.newBlocksShortPolling
@@ -36,7 +41,6 @@ import io.ktor.client.engine.mock.respondBadRequest
 import io.ktor.client.request.HttpRequestData
 import io.ktor.client.request.HttpResponseData
 import io.ktor.content.TextContent
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -53,7 +57,8 @@ class Web3Test {
     ): Web3 = Web3(
         httpClient = createMockClient(handler),
         endpointUrl = infuraUrl,
-        json = Json
+        json = Json,
+        chainId = 4.bi
     )
 
     @Test
@@ -203,7 +208,7 @@ class Web3Test {
     @Test
     fun `address encoder`() {
         val param = AddressParam
-        val addr = "9a0A2498Ec7f105ef65586592a5B6d4Da3590D74".bi(16)
+        val addr = "9a0A2498Ec7f105ef65586592a5B6d4Da3590D74".bi(16).let(EthereumAddress::createInstance)
         val result = param.encode(addr)
         val hex = result.toHex()
 
@@ -310,7 +315,7 @@ class Web3Test {
         }
 
         val result = runTest {
-            web3.getNativeTransactionCount(WalletAddress("0xdE7eC4E4895D7d148906a0DFaAF7f21ac5C5B80C"))
+            web3.getTransactionCount(WalletAddress("0xdE7eC4E4895D7d148906a0DFaAF7f21ac5C5B80C"))
         }
 
         assertEquals(
@@ -378,7 +383,7 @@ class Web3Test {
                     """{"jsonrpc":"","id":0,"result":null}"""
                 ).result as JsonNull
             )
-            val web3 = Web3("https://rinkeby.infura.io/v3/5a3d2c30cf72450c9e13b0570a737b62")
+            val web3 = Web3(chainId = 4.bi, "https://rinkeby.infura.io/v3/5a3d2c30cf72450c9e13b0570a737b62")
             web3.waitForTransactionReceipt(
                 TransactionHash("0x6f7914c8d005ab0dc7f44719dc658af72e534e083867a2a316d4b25555515352"),
                 timeOutMillis = 5_000
@@ -389,7 +394,7 @@ class Web3Test {
     //    @Test
     fun `new blocks short polling test`() {
         runBlocking {
-            val web3 = Web3("https://rinkeby.infura.io/v3/5a3d2c30cf72450c9e13b0570a737b62")
+            val web3 = Web3(chainId = 4.bi, "https://rinkeby.infura.io/v3/5a3d2c30cf72450c9e13b0570a737b62")
             web3.newBlocksShortPolling(pollingInterval = 5_000)
                 .collect { println("Block ${it.hash} mined!") }
         }
@@ -398,7 +403,7 @@ class Web3Test {
     //    @Test
     fun `new logs short polling test`() {
         runBlocking {
-            val web3 = Web3("https://rinkeby.infura.io/v3/5a3d2c30cf72450c9e13b0570a737b62")
+            val web3 = Web3(4.bi, "https://rinkeby.infura.io/v3/5a3d2c30cf72450c9e13b0570a737b62")
             web3.newLogsShortPolling(pollingInterval = 5_000)
                 .collect { println("Log $it caught!") }
         }
@@ -407,7 +412,7 @@ class Web3Test {
     //    @Test
     fun legacyTransactionForming() {
         runBlocking {
-            val web3 = Web3("https://api.avax-test.network/ext/bc/C/rpc")
+            val web3 = Web3(4.bi, "https://api.avax-test.network/ext/bc/C/rpc")
             val price = web3.getGasPrice()
             println("GAS Price: $price")
         }
@@ -416,7 +421,7 @@ class Web3Test {
     //    @Test
     fun legacyExtendedTransactionForming() {
         runBlocking {
-            val web3 = Web3("https://bsc.getblock.io/testnet/?api_key=94c96d69-74f0-40e7-8202-eac4b49e6bfc")
+            val web3 = Web3(4.bi, "https://bsc.getblock.io/testnet/?api_key=94c96d69-74f0-40e7-8202-eac4b49e6bfc")
             val price = web3.getGasPrice()
             val callData =
                 HexString("0x38ed17390000000000000000000000000000000000000000000000000de0b6b3a764000000000000000000000000000000000000000000000000000000002e57839a043800000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000140e21fcfb1e602a1626198d3dbbb58087b59b4e0000000000000000000000000000000000000000000000000000000061e8f26700000000000000000000000000000000000000000000000000000000000000030000000000000000000000009a01bf917477dd9f5d715d188618fc8b7350cd22000000000000000000000000ae13d989dac2f0debff460ac112a837c89baa7cd00000000000000000000000041b5984f45afb2560a0ed72bb69a98e8b32b3cca")

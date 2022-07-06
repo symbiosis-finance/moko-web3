@@ -20,5 +20,5 @@ dependencyResolutionManagement {
 includeBuild("web3-build-logic")
 
 include(":web3")
-include(":sample:android-app")
-include(":sample:mpp-library")
+include(":signing-delegated")
+

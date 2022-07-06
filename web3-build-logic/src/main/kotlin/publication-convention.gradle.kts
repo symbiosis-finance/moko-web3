@@ -12,7 +12,7 @@ publishing {
     repositories {
         maven {
             name = "moko-web3-github"
-            url = uri("https://maven.pkg.github.com/symbiosis-finance/mobile-sdk")
+            url = uri("https://maven.pkg.github.com/symbiosis-finance/maven")
             credentials {
                 username = System.getenv("GITHUB_USERNAME")
                 password = System.getenv("GITHUB_TOKEN")

@@ -4,19 +4,26 @@
 
 package dev.icerock.moko.web3
 
+import com.soywiz.kbignum.BigInt
 import dev.icerock.moko.web3.annotation.DelicateWeb3Api
 import dev.icerock.moko.web3.entity.RpcRequest
 import dev.icerock.moko.web3.entity.RpcResponse
+import dev.icerock.moko.web3.entity.Web3RpcException
+import dev.icerock.moko.web3.entity.Web3RpcRequest
+import dev.icerock.moko.web3.gas.DefaultGasProvider
+import dev.icerock.moko.web3.gas.GasProvider
+import dev.icerock.moko.web3.nonce.DefaultNonceManager
+import dev.icerock.moko.web3.nonce.NonceManager
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
-import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.SerializationStrategy
@@ -27,13 +34,14 @@ import kotlinx.serialization.json.*
  * @delicate Don't use the default constructor since it is for test purposes only
  */
 class Web3 @DelicateWeb3Api constructor(
+    override val chainId: BigInt,
     private val httpClient: HttpClient,
     private val json: Json,
     private val endpointUrl: String
 ) : Web3Executor {
-
     @OptIn(DelicateWeb3Api::class)
-    constructor(endpointUrl: String) : this(
+    constructor(chainId: BigInt, endpointUrl: String) : this(
+        chainId = chainId,
         httpClient = HttpClient {
             install(DefaultRequest) {
                 // some networks require the content type to be set
@@ -47,7 +55,11 @@ class Web3 @DelicateWeb3Api constructor(
         endpointUrl = endpointUrl
     )
 
-    override suspend fun <R> executeBatch(requests: List<Web3RpcRequest<*, out R>>): List<R> {
+    override val nonceManager = DefaultNonceManager(web3Executor = this)
+    override val gasProvider = DefaultGasProvider(web3Executor = this)
+
+    @OptIn(ExperimentalSerializationApi::class)
+    override suspend fun <R> executeBatch(requests: List<Web3RpcRequest<out R>>): List<R> {
         // Used later for logging if exception
         val rawRequests = requests
             .mapIndexed { index, web3Request ->
@@ -59,14 +71,7 @@ class Web3 @DelicateWeb3Api constructor(
             }
 
         val encodedToStringBody = rawRequests
-            .mapIndexed { index, request ->
-                val encodedParams = request.params.map { param ->
-                    val (value, serializer) = unsafeCast(param, requests[index].paramsSerializer)
-                    json.encodeToJsonElement(
-                        serializer = serializer,
-                        value = value
-                    )
-                }
+            .map { request ->
                 json.encodeToJsonElement(
                     serializer = RpcRequest.serializer(JsonElement.serializer()),
                     // cannot use copy since generics mismatch
@@ -74,7 +79,7 @@ class Web3 @DelicateWeb3Api constructor(
                         method = request.method,
                         id = request.id,
                         jsonrpc = request.jsonrpc,
-                        params = encodedParams
+                        params = request.params
                     )
                 )
             }.let { list -> json.encodeToString(list) }
